@@ -1,6 +1,6 @@
 {
-  "name": "ljcast",
-  "productName": "ljcast",
+  "name": "electron-typescript-webpack-react",
+  "productName": "electron-typescript-webpack-react",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
