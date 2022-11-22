@@ -1,6 +1,10 @@
-import { app, BrowserWindow, ipcMain as ipc, IpcMainEvent } from "electron";
-import { onAppReady } from "./lib/app";
-import { mainWindow } from "./lib/MainWindow";
+import { app, ipcMain as ipc } from "electron";
+import {
+  onAppActivate,
+  onAppReady,
+  onAppWindowsAllClosed,
+} from "./lib/Application";
+import { handleInvokeValue } from "./lib/InterProcessCommunication";
 
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -8,22 +12,8 @@ if (require("electron-squirrel-startup")) {
 
 app.on("ready", onAppReady);
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
+app.on("window-all-closed", onAppWindowsAllClosed);
 
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    mainWindow.open();
-  }
-});
-
-// Two-way IPC with invoke
-async function handleInvokeValue(_event: IpcMainEvent, value: string) {
-  console.log({ value });
-  return value;
-}
+app.on("activate", onAppActivate);
 
 ipc.handle("invoke-value", handleInvokeValue);

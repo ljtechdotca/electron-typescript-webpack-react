@@ -1,6 +1,6 @@
 import { FC, FormEvent } from "react";
 
-export const Home: FC = () => {
+export const Test: FC = () => {
   async function submitForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const testValue = (event.target as HTMLFormElement).test.value;

@@ -11,7 +11,7 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 class MainWindow {
-  _instance: BrowserWindow;
+  private _browserWindow: BrowserWindow;
   private _menu: Menu;
   private _tray: Tray;
   private _icon = resolve(__dirname, "main_window", "icon.ico");
@@ -29,19 +29,11 @@ class MainWindow {
       { type: "separator" },
       {
         label: "Hide / Show",
-        click: () => {
-          if (this._instance.isVisible()) {
-            this.hide();
-          } else {
-            this.show();
-          }
-        },
+        click: () => this.toggleVisibility(),
       },
       {
         label: "Open Debugger",
-        click: () => {
-          this.openDebugger();
-        },
+        click: () => this.openDevTools(),
       },
       { type: "separator" },
       { role: "quit" },
@@ -61,23 +53,23 @@ class MainWindow {
       icon: this._icon,
     };
 
-    this._instance = new BrowserWindow(options);
+    this._browserWindow = new BrowserWindow(options);
 
-    this._instance.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+    this._browserWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
     this._createMenu();
   }
 
-  hide() {
-    this._instance.hide();
+  toggleVisibility() {
+    if (this._browserWindow.isVisible()) {
+      this._browserWindow.hide();
+    } else {
+      this._browserWindow.show();
+    }
   }
 
-  show() {
-    this._instance.show();
-  }
-
-  openDebugger() {
-    this._instance.webContents.openDevTools();
+  openDevTools() {
+    this._browserWindow.webContents.openDevTools();
   }
 }
 
