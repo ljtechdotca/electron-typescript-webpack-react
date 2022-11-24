@@ -68,6 +68,11 @@ class MainWindow {
     }
   }
 
+  send(channel: string, ...args: any[]) {
+    console.log({ channel, args });
+    this._browserWindow.webContents.send(channel, ...args);
+  }
+
   openDevTools() {
     this._browserWindow.webContents.openDevTools();
   }

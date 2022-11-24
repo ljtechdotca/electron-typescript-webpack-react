@@ -4,7 +4,7 @@ import {
   onAppReady,
   onAppWindowsAllClosed,
 } from "./lib/Application";
-import { handleInvokeValue } from "./lib/InterProcessCommunication";
+import { fetch } from "./lib/InterProcessCommunication";
 
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -16,4 +16,6 @@ app.on("window-all-closed", onAppWindowsAllClosed);
 
 app.on("activate", onAppActivate);
 
-ipc.handle("invoke-value", handleInvokeValue);
+ipc.handle("fetch", (_event, url, options) => {
+  return fetch(url, options);
+});

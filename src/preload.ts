@@ -8,7 +8,8 @@ declare global {
 }
 
 const api = {
-  invokeValue: (value: string) => ipc.invoke("invoke-value", value),
+  fetch: (url: string, options?: RequestInit) =>
+    ipc.invoke("fetch", url, options),
 };
 
 contextBridge.exposeInMainWorld("Main", api);

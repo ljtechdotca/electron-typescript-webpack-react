@@ -1,22 +1,29 @@
-import { FC, FormEvent } from "react";
+import { FC, useState } from "react";
+
+const url =
+  "https://www.random.org/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new";
 
 export const Test: FC = () => {
-  async function submitForm(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const testValue = (event.target as HTMLFormElement).test.value;
-    const invokeValue = await window.Main.invokeValue(testValue);
+  const [data, setData] = useState<any>();
+  const [isLoading, setIsLoading] = useState(false);
 
-    console.log({ invokeValue });
+  async function testFetch(url: string) {
+    setIsLoading(true);
+    const response = await window.Main.fetch(url);
+    setIsLoading(false);
+    setData(response);
   }
 
   return (
     <div>
-      <form onSubmit={submitForm}>
-        <label htmlFor="test">
-          <input type="text" id="test" name="test" placeholder="test" />
-        </label>
-        <button type="submit">submit</button>
-      </form>
+      <button onClick={() => testFetch(url)}>submit</button>
+      {isLoading ? (
+        "Loading"
+      ) : (
+        <pre>
+          <code>{JSON.stringify(data, null, 4)}</code>
+        </pre>
+      )}
     </div>
   );
 };
