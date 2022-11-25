@@ -1,0 +1,7 @@
+{
+  "title": "electron-typescript-webpack-react",
+  "icon": "C:\\Projects\\electron\\ljcast\\.webpack\\main\\main_window\\icon.ico",
+  "smallIcon": "C:\\Projects\\electron\\ljcast\\.webpack\\main\\main_window\\small-icon.png",
+  "width": 600,
+  "height": 400
+}

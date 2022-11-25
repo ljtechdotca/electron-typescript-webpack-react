@@ -1,29 +1,28 @@
-import {
-  BrowserWindow,
-  Menu,
-  MenuItem,
-  MenuItemConstructorOptions,
-  Tray,
-} from "electron";
-import { resolve } from "path";
+import { BrowserWindow, Menu, Tray } from "electron";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 class MainWindow {
   private _browserWindow: BrowserWindow;
-  private _menu: Menu;
-  private _tray: Tray;
-  private _icon = resolve(__dirname, "main_window", "icon.ico");
-  private _smallIcon = resolve(__dirname, "main_window", "small-icon.png");
 
-  private _createMenu() {
-    this._tray = new Tray(this._icon);
+  public open({ title, icon, smallIcon, width, height }: MainWindowConfig) {
+    this._browserWindow = new BrowserWindow({
+      title,
+      icon,
+      width,
+      height,
+      webPreferences: {
+        preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      },
+    });
 
-    const template: (MenuItem | MenuItemConstructorOptions)[] = [
+    this._browserWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+
+    const menu = Menu.buildFromTemplate([
       {
-        icon: this._smallIcon,
-        label: "ljtech",
+        icon: smallIcon,
+        label: title,
         enabled: true,
       },
       { type: "separator" },
@@ -37,27 +36,11 @@ class MainWindow {
       },
       { type: "separator" },
       { role: "quit" },
-    ];
+    ]);
 
-    this._menu = Menu.buildFromTemplate(template);
-    this._tray.setContextMenu(this._menu);
-  }
+    const tray = new Tray(icon);
 
-  open() {
-    const options = {
-      height: 600,
-      width: 800,
-      webPreferences: {
-        preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-      },
-      icon: this._icon,
-    };
-
-    this._browserWindow = new BrowserWindow(options);
-
-    this._browserWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-    this._createMenu();
+    tray.setContextMenu(menu);
   }
 
   toggleVisibility() {

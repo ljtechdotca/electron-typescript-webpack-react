@@ -1,13 +1,14 @@
 import { app, BrowserWindow } from "electron";
 import { mainWindow } from "./MainWindow";
 
-export function onAppReady() {
-  mainWindow.open();
+export function onAppReady(config: MainWindowConfig) {
+  mainWindow.open(config);
+  mainWindow.openDevTools();
 }
 
-export function onAppActivate() {
+export function onAppActivate(config: MainWindowConfig) {
   if (BrowserWindow.getAllWindows().length === 0) {
-    mainWindow.open();
+    mainWindow.open(config);
   }
 }
 

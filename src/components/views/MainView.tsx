@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Test } from "./views/Test";
+import { Test } from "../Test";
 
 export const MainView: FC = () => {
   return (
